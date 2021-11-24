@@ -13,7 +13,7 @@ int main()
 
 	TSnap7Client *Client = new TSnap7Client();
 
-	int ret = Client->ConnectTo("10.85.12.153",0,2);
+	int ret = Client->ConnectTo("10.85.12.153",0,0);
 
 	if (ret==0) 
 	{
@@ -24,9 +24,12 @@ int main()
 		cout << "Error: " << ret << endl;
 		return 0;
 	}
+	union {
+		byte by[4];
+		float f;
+	} result;
 
-
-	Client->DBRead(32, 0, 16, &MyDB32);
+	Client->ReadArea(S7AreaDB,2,20, S7WLReal,4,&result.by[0]);
 
 	delete Client;
 
