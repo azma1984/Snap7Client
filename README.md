@@ -1,2 +1,2 @@
 # Snap7Client
-SIMATIC ET 200SP
+Read data from SIMATIC ET 200SP
