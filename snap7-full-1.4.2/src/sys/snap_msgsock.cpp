@@ -426,8 +426,8 @@ int TMsgSocket::SckConnect()
     SetSin(RemoteSin, RemoteAddress, RemotePort);
     if (LastTcpError==0)
     {
-        if (Ping(RemoteSin))
-        {
+        //if (Ping(RemoteSin))
+       // {
             CreateSocket();
             if (LastTcpError==0)
             {
@@ -439,9 +439,9 @@ int TMsgSocket::SckConnect()
                     ClientHandle=LocalSin.sin_addr.s_addr;
                 }
             }
-        }
-        else
-            LastTcpError=WSAEHOSTUNREACH;
+       // }
+       // else
+        //    LastTcpError=WSAEHOSTUNREACH;
     }
     Connected=LastTcpError==0;
     return LastTcpError;
