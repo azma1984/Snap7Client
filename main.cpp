@@ -9,8 +9,6 @@ using namespace std;
 
 int main()
 {
-	unsigned char MyDB32[256]={}; // byte is a portable type of snap7.h
-
 	TSnap7Client *Client = new TSnap7Client();
 
 	int ret = Client->ConnectTo("10.85.12.153",0,0);
@@ -24,26 +22,31 @@ int main()
 		cout << "Error: " << ret << endl;
 		return 0;
 	}
+
 	byte result[1000] = {};
+	
 	union {
 		byte by[4];
+		int i;
 		word w;
 		float f;
 	} a;
 	float f1;
 	byte by1;
+	int iRegim, iRabota, iPozhar, iAvar;
 	float fP1, fP2, fP3, fP4, fP5, fP6, fP7;
 	float fG1, fG2;
 	float fT1, fT2, fT3, fT4, fT5, fT6, fT7;
 	float fF1, fF2, fF3;
 	float fValve1, fValve2;
-	byte byPump1, byPump2, byPump3;
+	float fUstP;
+	int iPump1, iPump2, iPump3;
 	int iI1, iI2, iI3;
+	int iSt1, iSt2, iSt3;
+	int iStValve1, iStValve2;
+	int iAvar1, iAvar2;
 
-
-
-
-	Client->ReadArea(S7AreaDB, 2, 0, 800, S7WLByte, &result);
+	Client->ReadArea(S7AreaDB, 2, 0, 600, S7WLByte, &result);
 
 	a.by[0] = result[23]; a.by[1] = result[22]; a.by[2] = result[21]; a.by[3] = result[20];
 	fP1 = a.f; cout << "fP1 = " << fP1 << endl;
@@ -91,55 +94,51 @@ int main()
 	a.by[0] = result[247]; a.by[1] = result[246]; a.by[2] = result[245]; a.by[3] = result[244];
 	fT6 = a.f; cout << "fT6 = " << fT6 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 244, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fT6 = a.f;
-	cout << "fT6 = " << fT6 << endl;
+	a.by[0] = result[263]; a.by[1] = result[262]; a.by[2] = result[261]; a.by[3] = result[260];
+	fT7 = a.f; cout << "fT7 = " << fT7 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 260, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fT7 = a.f;
-	cout << "fT7 = " << fT7 << endl;
+	a.by[0] = result[329]; a.by[1] = result[328]; a.by[2] = result[327]; a.by[3] = result[326];
+	fF1 = a.f; cout << "fF1 = " << fF1 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 326, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fF1 = a.f;
-	cout << "fF1 = " << fF1 << endl;
+	a.by[0] = result[367]; a.by[1] = result[366]; a.by[2] = result[365]; a.by[3] = result[364];
+	fF2 = a.f; cout << "fF2 = " << fF2 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 364, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fF2 = a.f;
-	cout << "fF2 = " << fF2 << endl;
+	a.by[0] = result[405]; a.by[1] = result[404]; a.by[2] = result[403]; a.by[3] = result[402];
+	fF3 = a.f; cout << "fF3 = " << fF3 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 402, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fF3 = a.f;
-	cout << "fF3 = " << fF3 << endl;
+	iStValve1 = result[447]; cout << "iStValve1 = " << iStValve1 << endl;
+	a.by[0] = result[441]; a.by[1] = result[440]; a.by[2] = result[439]; a.by[3] = result[438];
+	fValve1 = a.f; cout << "fValve1 = " << fValve1 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 438, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fValve1 = a.f;
-	cout << "fValve1  = " << fValve1 << endl;
+	iStValve2 = result[461]; cout << "iStValve2 = " << iStValve2 << endl;
+	a.by[0] = result[455]; a.by[1] = result[454]; a.by[2] = result[453]; a.by[3] = result[452];
+	fValve2 = a.f; cout << "fValve2 = " << fValve2 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 452, S7WLReal, 4, &a);
-	by1 = a.by[0]; a.by[0] = a.by[3]; a.by[3] = by1;
-	by1 = a.by[1]; a.by[1] = a.by[2]; a.by[2] = by1;
-	fValve2 = a.f;
-	cout << "fValve2  = " << fValve2 << endl;
+	iSt1 = result[322]; cout << "iSt1 = " << iSt1 << endl;
+	iPump1 = result[337]; cout << "iPump1 = " << iPump1 << endl;
+	a.by[0] = result[357]; a.by[1] = result[356]; a.by[2] = result[355]; a.by[3] = result[354];
+	iI1 = a.i; cout << "iI1 = " << iI1 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 322, S7WLByte, 1, &byPump1);
-	Client->ReadArea(S7AreaDB, 2, 360, S7WLByte, 1, &byPump2);
-	Client->ReadArea(S7AreaDB, 2, 398, S7WLByte, 1, &byPump3);
+	iSt2 = result[360]; cout << "iSt2 = " << iSt2 << endl;
+	iPump2 = result[375]; cout << "iPump2 = " << iPump2 << endl;
+	a.by[0] = result[395]; a.by[1] = result[394]; a.by[2] = result[393]; a.by[3] = result[392];
+	iI2 = a.i; cout << "iI2 = " << iI2 << endl;
 
-	Client->ReadArea(S7AreaDB, 2, 354, S7WLInt, 4, &iI1);
-	Client->ReadArea(S7AreaDB, 2, 392, S7WLInt, 4, &iI2);
-	Client->ReadArea(S7AreaDB, 2, 430, S7WLInt, 4, &iI3);
+	iSt3 = result[398]; cout << "iSt3 = " << iSt3 << endl;
+	iPump3 = result[413]; cout << "iPump3 = " << iPump3 << endl;
+	a.by[0] = result[433]; a.by[1] = result[432]; a.by[2] = result[431]; a.by[3] = result[430];
+	iI3 = a.i; cout << "iI3 = " << iI3 << endl;
+
+	a.by[0] = result[509]; a.by[1] = result[508]; a.by[2] = result[507]; a.by[3] = result[506];
+	fUstP = a.f; cout << "fUstP = " << fUstP << endl;
+
+	iRegim = result[1]; cout << "iRegim = " << iRegim << endl;
+	iPozhar = result[3]; cout << "iPozhar = " << iPozhar << endl;
+	iRabota = result[5]; cout << "iRabota = " << iRabota << endl;
+	iAvar = result[7]; cout << "iAvar = " << iAvar << endl;
+
+	iAvar1 = result[560]; cout << "iAvar1 = " << iAvar1 << endl;
+	iAvar2 = result[561]; cout << "iAvar2 = " << iAvar2 << endl;
 
 	delete Client;
 
